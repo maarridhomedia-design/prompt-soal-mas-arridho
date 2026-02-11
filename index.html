@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Prompt Generator Soal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-effect {
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+    }
+    .input-focus:focus {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.3); }
+    }
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(248, 250, 252, 0.5);
+      border-radius: 3px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.4);
+      border-radius: 3px;
+    }
+    .required-label::after {
+      content: ' *';
+      color: #dc2626;
+      font-weight: bold;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full bg-gradient-to-br from-white to-slate-50">
+  <div id="app-wrapper" class="h-full w-full overflow-auto">
+   <div class="min-h-full w-full px-4 py-8 md:px-8"><!-- Header -->
+    <header class="text-center mb-10 animate-fade-in">
+     <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 pulse-glow">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0114 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+     </div>
+     <h1 id="app-title" class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">Generator Prompt AI</h1>
+     <p id="subtitle" class="text-slate-600 text-lg">Buat prompt AI untuk pembuatan soal dengan mudah</p>
+    </header>
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-6"><!-- Form Section -->
+     <div class="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-slate-200 glow-effect animate-fade-in shadow-lg" style="animation-delay: 0.1s">
+      <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg></span> Buat Prompt Baru</h2>
+      <form id="prompt-form" class="space-y-5"><!-- Nama Guru -->
+       <div><label for="teacher-name" class="block text-sm font-semibold text-slate-700 mb-2 required-label">Nama Guru</label> <input type="text" id="teacher-name" required placeholder="Contoh: Ibu Siti, Pak Ahmad" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 input-focus focus:outline-none focus:border-indigo-500 transition-all">
+       </div><!-- Kelas -->
+       <div><label for="class-level" class="block text-sm font-semibold text-slate-700 mb-2 required-label">Kelas</label> <select id="class-level" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="">-- Pilih Kelas --</option> <option value="10">Kelas 10</option> <option value="11">Kelas 11</option> <option value="12">Kelas 12</option> </select>
+       </div><!-- Mata Pelajaran -->
+       <div><label for="subject" class="block text-sm font-semibold text-slate-700 mb-2 required-label">Mata Pelajaran</label> <select id="subject" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="">-- Pilih Mata Pelajaran --</option> <option value="Bahasa Indonesia">Bahasa Indonesia</option> <option value="Matematika">Matematika</option> <option value="Sosiologi">Sosiologi</option> <option value="Ekonomi">Ekonomi</option> <option value="Geografi">Geografi</option> <option value="Ad-Dasuki">Ad-Dasuki</option> <option value="Sejarah Indonesia">Sejarah Indonesia</option> <option value="PKN">PKN</option> <option value="Bahasa Arab">Bahasa Arab</option> <option value="Bahasa Inggris">Bahasa Inggris</option> <option value="Pencak Silat">Pencak Silat</option> <option value="Desain Visual">Desain Visual</option> <option value="Pramuka Uqutulujjin">Pramuka Uqutulujjin</option> <option value="Fathul Qorib">Fathul Qorib</option> <option value="Arba'una Haditsan">Arba'una Haditsan</option> <option value="Khulasoh">Khulasoh</option> <option value="Akidah Akhlak">Akidah Akhlak</option> <option value="BMK">BMK</option> </select>
+       </div><!-- Topik/Materi -->
+       <div><label for="topic" class="block text-sm font-semibold text-slate-700 mb-2 required-label">Topik/Materi</label> <input type="text" id="topic" required placeholder="Contoh: Persamaan Kuadrat, Hukum Newton" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 input-focus focus:outline-none focus:border-indigo-500 transition-all">
+       </div>
+       <div class="grid grid-cols-2 gap-4"><!-- Tingkat Kesulitan -->
+        <div><label for="difficulty" class="block text-sm font-semibold text-slate-700 mb-2">Tingkat Kesulitan</label> <select id="difficulty" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="mudah">Mudah</option> <option value="sedang" selected>Sedang</option> <option value="sulit">Sulit</option> <option value="campuran">Campuran</option> </select>
+        </div><!-- Level Bloom -->
+        <div><label for="bloom-level" class="block text-sm font-semibold text-slate-700 mb-2">Level Bloom</label> <select id="bloom-level" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="">-- Pilih Level --</option> <option value="C1">C1 - Mengingat (Remember)</option> <option value="C2">C2 - Memahami (Understand)</option> <option value="C3">C3 - Menerapkan (Apply)</option> <option value="C4">C4 - Menganalisis (Analyze)</option> <option value="C5">C5 - Mengevaluasi (Evaluate)</option> <option value="C6">C6 - Mencipta (Create)</option> <option value="campuran">Campuran</option> </select>
+        </div>
+       </div><!-- Jumlah Soal -->
+       <div><label for="question-count" class="block text-sm font-semibold text-slate-700 mb-2">Jumlah Soal</label> <input type="number" id="question-count" value="10" min="1" max="50" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all">
+       </div><!-- Jenis Soal -->
+       <div><label for="question-type" class="block text-sm font-semibold text-slate-700 mb-2">Jenis Soal</label> <select id="question-type" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="pilihan_ganda">Pilihan Ganda</option> <option value="essay">Essay</option> <option value="isian_singkat">Isian Singkat</option> <option value="benar_salah">Benar/Salah</option> <option value="campuran">Campuran</option> </select>
+       </div><!-- Format Output -->
+       <div><label for="output-format" class="block text-sm font-semibold text-slate-700 mb-2">Format Output</label> <select id="output-format" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 input-focus focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"> <option value="teks">Teks (Tampil di Layar)</option> <option value="doc">Microsoft Word (DOC)</option> <option value="pdf">PDF</option> </select>
+       </div><!-- Generate Button --> <button type="submit" id="generate-btn" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg><span id="btn-text">Generate Prompt</span> </button>
+      </form><!-- Result Section -->
+      <div id="result-section" class="hidden mt-8 pt-8 border-t border-slate-200">
+       <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+         <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+         </svg></span> Hasil Prompt</h3>
+       <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-4">
+        <div class="flex items-center justify-between">
+         <div>
+          <h4 class="text-base font-bold text-slate-900">📋 PROMPT SIAP DIGUNAKAN</h4>
+          <p class="text-xs text-slate-600 mt-1">Salin ke ChatGPT, Claude, atau AI Chat favorit Anda</p>
+         </div><button id="copy-btn" type="button" class="py-3 px-6 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-lg transition-all transform hover:scale-[1.05] active:scale-[0.95] flex items-center justify-center gap-2 text-sm shadow-lg whitespace-nowrap">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg> Salin </button>
+        </div>
+       </div>
+       <div class="bg-white rounded-xl p-5 border border-slate-300">
+        <pre id="generated-prompt" class="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap font-sans max-h-[300px] overflow-y-auto scrollbar-thin"></pre>
+       </div>
+       <div id="save-status" class="hidden bg-green-50 p-4 rounded-xl border border-green-200 mt-4">
+        <p class="text-sm text-green-800">✅ <strong>Tersimpan ke Riwayat!</strong> Scroll ke panel riwayat untuk melihat.</p>
+       </div>
+       <div class="flex gap-3 mt-4"><button id="save-history-btn" type="button" class="flex-1 py-3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2m0 0v-8m0 8H3m15 0h3" />
+         </svg> Simpan ke Riwayat </button>
+       </div>
+      </div>
+     </div><!-- History Section -->
+     <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 glow-effect animate-fade-in shadow-lg h-fit" style="animation-delay: 0.2s">
+      <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg></span> Riwayat</h2>
+      <div id="history-container" class="space-y-3 max-h-[600px] overflow-y-auto scrollbar-thin">
+       <div id="empty-history" class="flex flex-col items-center justify-center py-12 text-center">
+        <svg class="w-12 h-12 text-slate-300 mb-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <p class="text-slate-500 font-medium text-sm">Belum ada riwayat</p>
+        <p class="text-slate-400 text-xs mt-1">Simpan prompt untuk menyimpan</p>
+       </div>
+      </div><!-- Clear History Button --> <button id="clear-history-btn" type="button" class="hidden w-full mt-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors"> 🗑️ Hapus Semua Riwayat </button>
+     </div>
+    </div>
+   </div>
+  </div><!-- Toast Message -->
+  <div id="toast" class="hidden fixed bottom-6 right-6 px-5 py-3 bg-emerald-600 text-white font-medium rounded-xl shadow-lg transform transition-all z-50"><span id="toast-message">Berhasil!</span>
+  </div><!-- Modal Detail -->
+  <div id="detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+   <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto scrollbar-thin">
+    <div class="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
+     <h3 id="modal-title" class="text-xl font-bold text-slate-900"></h3><button id="modal-close-x" type="button" class="text-slate-500 hover:text-slate-700 text-2xl">×</button>
+    </div>
+    <div class="p-6">
+     <div id="modal-content" class="space-y-4"></div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      app_title: 'Generator Prompt AI',
+      subtitle_text: 'Buat prompt AI untuk pembuatan soal dengan mudah'
+    };
+
+    let config = { ...defaultConfig };
+    let historyData = [];
+    let lastGeneratedData = null;
+    let currentModalItem = null;
+
+    const dataHandler = {
+      onDataChanged(data) {
+        historyData = data;
+        renderHistory();
+      }
+    };
+
+    (async () => {
+      if (window.dataSdk) {
+        const initResult = await window.dataSdk.init(dataHandler);
+      }
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (newConfig) => {
+            config = { ...defaultConfig, ...newConfig };
+            applyConfig();
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ['app_title', cfg.app_title || defaultConfig.app_title],
+            ['subtitle_text', cfg.subtitle_text || defaultConfig.subtitle_text]
+          ])
+        });
+      }
+    })();
+
+    function applyConfig() {
+      document.getElementById('app-title').textContent = config.app_title || defaultConfig.app_title;
+      document.getElementById('subtitle').textContent = config.subtitle_text || defaultConfig.subtitle_text;
+    }
+
+    const questionTypeLabels = {
+      'pilihan_ganda': 'Pilihan Ganda',
+      'essay': 'Essay',
+      'isian_singkat': 'Isian Singkat',
+      'benar_salah': 'Benar/Salah',
+      'campuran': 'Campuran'
+    };
+
+    const difficultyLabels = {
+      'mudah': 'Mudah',
+      'sedang': 'Sedang',
+      'sulit': 'Sulit',
+      'campuran': 'Campuran'
+    };
+
+    const bloomDescriptions = {
+      'C1': { name: 'Mengingat (Remember)', desc: 'Siswa dapat mengingat dan mengenali kembali informasi, fakta, atau konsep dasar', keywords: 'sebutkan, ingat, kenali, identifikasi, definisikan' },
+      'C2': { name: 'Memahami (Understand)', desc: 'Siswa dapat menjelaskan makna dan interpretasi informasi', keywords: 'jelaskan, deskripsikan, uraikan, interpretasikan, klasifikasikan' },
+      'C3': { name: 'Menerapkan (Apply)', desc: 'Siswa dapat menggunakan informasi dalam situasi baru atau konteks yang berbeda', keywords: 'terapkan, gunakan, demonstrasikan, tunjukkan, praktikkan' },
+      'C4': { name: 'Menganalisis (Analyze)', desc: 'Siswa dapat memecah informasi menjadi bagian-bagian dan menentukan hubungan antar bagian', keywords: 'analisis, bandingkan, kontraskan, kategorikan, hubungkan' },
+      'C5': { name: 'Mengevaluasi (Evaluate)', desc: 'Siswa dapat membuat penilaian berdasarkan kriteria dan standar tertentu', keywords: 'evaluasi, nilai, kritik, pertimbangkan, buktikan' },
+      'C6': { name: 'Mencipta (Create)', desc: 'Siswa dapat menggabungkan elemen-elemen untuk membuat sesuatu yang baru', keywords: 'ciptakan, desain, rancang, susun, kombinasikan' },
+      'campuran': { name: 'Campuran', desc: 'Soal mencakup berbagai level Bloom dari C1 hingga C6', keywords: 'berbagai level kognitif' }
+    };
+
+    const formatLabels = {
+      'teks': 'Teks (Tampil di Layar)',
+      'doc': 'Microsoft Word (DOC)',
+      'pdf': 'PDF'
+    };
+
+    function generatePrompt(data) {
+      const { teacherName, classLevel, subject, topic, difficulty, bloomLevel, questionType, questionCount, outputFormat } = data;
+      
+      let bloomInfo = '';
+      if (bloomLevel && bloomLevel !== '') {
+        const bloom = bloomDescriptions[bloomLevel];
+        bloomInfo = `
+• Level Bloom: ${bloom.name}
+• Deskripsi: ${bloom.desc}
+• Kata Kunci: ${bloom.keywords}`;
+      }
+
+      let formatInfo = `
+• Format Output: ${formatLabels[outputFormat]}`;
+
+      let prompt = `Bertindaklah sebagai ahli kurikulum pendidikan Indonesia dan guru profesional yang kreatif. Tugas Anda adalah membuat soal lengkap dan berkualitas tinggi.
+
+Buatlah ${questionCount} soal ${questionTypeLabels[questionType]} untuk mata pelajaran ${subject} dengan topik "${topic}".
+
+👨‍🏫 INFORMASI GURU: ${teacherName}
+📚 LEVEL SISWA: Kelas ${classLevel}
+
+📋 SPESIFIKASI SOAL:
+• Tingkat Kesulitan: ${difficultyLabels[difficulty]}${bloomInfo}${formatInfo}
+• Jumlah Soal: ${questionCount} soal
+• Sesuai kurikulum untuk siswa Kelas ${classLevel}
+
+📝 FORMAT OUTPUT:`;
+
+      if (questionType === 'pilihan_ganda') {
+        prompt += `
+Untuk setiap soal, berikan:
+1. Nomor soal
+2. Pertanyaan yang jelas dan tidak ambigu
+3. 4 pilihan jawaban (A, B, C, D)
+4. Kunci jawaban
+5. Pembahasan singkat`;
+      } else if (questionType === 'essay') {
+        prompt += `
+Untuk setiap soal, berikan:
+1. Nomor soal
+2. Pertanyaan essay yang memerlukan penjelasan mendalam
+3. Kunci jawaban/rubrik penilaian
+4. Poin-poin penting yang harus ada dalam jawaban`;
+      } else if (questionType === 'isian_singkat') {
+        prompt += `
+Untuk setiap soal, berikan:
+1. Nomor soal
+2. Kalimat dengan bagian kosong yang harus diisi
+3. Jawaban yang benar
+4. Penjelasan singkat`;
+      } else if (questionType === 'benar_salah') {
+        prompt += `
+Untuk setiap soal, berikan:
+1. Nomor soal
+2. Pernyataan yang harus dinilai Benar atau Salah
+3. Jawaban (Benar/Salah)
+4. Penjelasan mengapa pernyataan tersebut benar atau salah`;
+      } else {
+        prompt += `
+Berikan variasi jenis soal (pilihan ganda, essay, isian singkat, benar/salah) dengan format yang sesuai untuk masing-masing jenis.`;
+      }
+
+      prompt += `
+
+⚙️ PANDUAN TAMBAHAN:
+• Pastikan soal sesuai dengan kurikulum untuk Kelas ${classLevel}
+• Gunakan bahasa yang baku dan mudah dipahami
+• Hindari soal yang ambigu atau memiliki lebih dari satu jawaban benar
+• Tingkat kesulitan harus konsisten dengan yang diminta
+• Sesuaikan kompleksitas dengan level kognitif siswa Kelas ${classLevel}`;
+
+      if (bloomLevel && bloomLevel !== '') {
+        const bloom = bloomDescriptions[bloomLevel];
+        prompt += `
+• Soal harus dirancang pada level Bloom: ${bloom.name}
+• Fokus pada dimensi kognitif: ${bloom.desc}`;
+      }
+
+      prompt += `
+
+Silakan mulai membuat soal sesuai dengan spesifikasi di atas.`;
+
+      return prompt;
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInMs = now - date;
+      const diffInMins = Math.floor(diffInMs / 60000);
+      const diffInHours = Math.floor(diffInMs / 3600000);
+      const diffInDays = Math.floor(diffInMs / 86400000);
+
+      if (diffInMins < 1) return 'Baru saja';
+      if (diffInMins < 60) return `${diffInMins}m lalu`;
+      if (diffInHours < 24) return `${diffInHours}h lalu`;
+      if (diffInDays < 7) return `${diffInDays}d lalu`;
+      
+      return date.toLocaleDateString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      const emptyState = document.getElementById('empty-history');
+      const clearBtn = document.getElementById('clear-history-btn');
+
+      if (historyData.length === 0) {
+        container.innerHTML = '';
+        container.appendChild(emptyState.cloneNode(true));
+        clearBtn.classList.add('hidden');
+        return;
+      }
+
+      container.innerHTML = '';
+      clearBtn.classList.remove('hidden');
+
+      const sortedHistory = [...historyData].reverse();
+      sortedHistory.forEach((item) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 cursor-pointer transition-all';
+        historyItem.innerHTML = `
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <h4 class="font-semibold text-slate-900 truncate">${item.subject} - ${item.topic}</h4>
+              <p class="text-xs text-slate-600 mt-1">👨‍🏫 ${item.teacher_name}</p>
+              <p class="text-xs text-slate-500 mt-1">${formatDate(item.created_at)}</p>
+            </div>
+            <button type="button" onclick="deleteHistoryItem('${item.__backendId}')" class="text-red-500 hover:text-red-700 text-lg p-1" title="Hapus">
+              ✕
+            </button>
+          </div>
+        `;
+        
+        historyItem.addEventListener('click', (e) => {
+          if (!e.target.closest('button')) {
+            openDetail(item);
+          }
+        });
+        
+        container.appendChild(historyItem);
+      });
+    }
+
+    function openDetail(item) {
+      currentModalItem = item;
+      const modal = document.getElementById('detail-modal');
+      const title = document.getElementById('modal-title');
+      const content = document.getElementById('modal-content');
+
+      title.textContent = `${item.subject} - ${item.topic}`;
+      
+      content.innerHTML = `
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-slate-600 font-semibold">Guru</p>
+              <p class="text-slate-900">${item.teacher_name}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-semibold">Kelas</p>
+              <p class="text-slate-900">Kelas ${item.class_level}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-semibold">Jenis Soal</p>
+              <p class="text-slate-900">${questionTypeLabels[item.question_type]}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-600 font-semibold">Tingkat Kesulitan</p>
+              <p class="text-slate-900">${difficultyLabels[item.difficulty]}</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs text-slate-600 font-semibold mb-2">Prompt</p>
+            <div class="bg-slate-50 p-4 rounded-lg max-h-[300px] overflow-y-auto scrollbar-thin">
+              <pre class="text-xs text-slate-700 whitespace-pre-wrap font-sans">${item.generated_prompt}</pre>
+            </div>
+          </div>
+          <div class="flex gap-3 pt-4">
+            <button id="modal-copy-btn" type="button" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors">
+              Salin Prompt
+            </button>
+            <button id="modal-close-btn" type="button" class="flex-1 py-2 bg-slate-300 hover:bg-slate-400 text-slate-900 font-semibold rounded-lg transition-colors">
+              Tutup
+            </button>
+          </div>
+        </div>
+      `;
+
+      const copyBtn = document.getElementById('modal-copy-btn');
+      const closeBtn = document.getElementById('modal-close-btn');
+      
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          const prompt = item.generated_prompt;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(prompt).then(() => {
+              showToast('✅ Prompt berhasil disalin!');
+              closeModal();
+            }).catch(() => {
+              fallbackCopy(prompt);
+              closeModal();
+            });
+          } else {
+            fallbackCopy(prompt);
+            closeModal();
+          }
+        });
+      }
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+      currentModalItem = null;
+    }
+
+    document.getElementById('modal-close-x').addEventListener('click', closeModal);
+
+    async function deleteHistoryItem(backendId) {
+      const item = historyData.find(h => h.__backendId === backendId);
+      if (!item) return;
+
+      const result = await window.dataSdk.delete(item);
+      if (result.isOk) {
+        showToast('✅ Item dihapus dari riwayat');
+      } else {
+        showToast('❌ Gagal menghapus item', true);
+      }
+    }
+
+    document.getElementById('prompt-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const teacherName = document.getElementById('teacher-name').value.trim();
+      const classLevel = document.getElementById('class-level').value;
+      const subject = document.getElementById('subject').value;
+      const topic = document.getElementById('topic').value.trim();
+
+      let errors = [];
+      if (!teacherName) errors.push('Nama Guru');
+      if (!classLevel) errors.push('Kelas');
+      if (!subject) errors.push('Mata Pelajaran');
+      if (!topic) errors.push('Topik/Materi');
+
+      if (errors.length > 0) {
+        let errorDiv = document.getElementById('form-errors');
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = 'form-errors';
+          document.getElementById('prompt-form').insertBefore(errorDiv, document.getElementById('prompt-form').firstChild);
+        }
+        errorDiv.className = 'bg-red-50 border-2 border-red-300 rounded-xl p-4 mb-6 animate-fade-in';
+        errorDiv.innerHTML = `
+          <div class="text-red-800 font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            ⚠️ Field wajib diisi!
+          </div>
+          <ul class="text-red-700 text-sm space-y-1 ml-7">
+            ${errors.map(e => `<li>• ${e}</li>`).join('')}
+          </ul>
+        `;
+        showToast('❌ Lengkapi semua field yang wajib!', true);
+        return;
+      }
+
+      let errorDiv = document.getElementById('form-errors');
+      if (errorDiv) errorDiv.remove();
+
+      const generateBtn = document.getElementById('generate-btn');
+      const btnText = document.getElementById('btn-text');
+      const originalText = btnText.textContent;
+
+      generateBtn.disabled = true;
+      btnText.textContent = 'Memproses...';
+
+      const data = {
+        teacherName: teacherName,
+        classLevel: classLevel,
+        subject: subject,
+        topic: topic,
+        difficulty: document.getElementById('difficulty').value,
+        bloomLevel: document.getElementById('bloom-level').value,
+        questionType: document.getElementById('question-type').value,
+        questionCount: parseInt(document.getElementById('question-count').value) || 10,
+        outputFormat: document.getElementById('output-format').value
+      };
+
+      const prompt = generatePrompt(data);
+
+      lastGeneratedData = {
+        teacher_name: data.teacherName,
+        class_level: data.classLevel,
+        subject: data.subject,
+        topic: data.topic,
+        difficulty: data.difficulty,
+        bloom_level: data.bloomLevel,
+        question_type: data.questionType,
+        question_count: data.questionCount.toString(),
+        output_format: data.outputFormat,
+        generated_prompt: prompt,
+        created_at: new Date().toISOString()
+      };
+
+      document.getElementById('result-section').classList.remove('hidden');
+      document.getElementById('generated-prompt').textContent = prompt;
+      document.getElementById('save-status').classList.add('hidden');
+      document.getElementById('save-history-btn').textContent = '📌 Simpan ke Riwayat';
+
+      generateBtn.disabled = false;
+      btnText.textContent = originalText;
+    });
+
+    document.getElementById('save-history-btn').addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      if (!lastGeneratedData) {
+        showToast('❌ Generate prompt terlebih dahulu', true);
+        return;
+      }
+
+      if (!window.dataSdk) {
+        showToast('❌ Data SDK tidak tersedia', true);
+        return;
+      }
+
+      const saveBtn = document.getElementById('save-history-btn');
+      const originalText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Menyimpan...';
+
+      try {
+        const result = await window.dataSdk.create(lastGeneratedData);
+
+        if (result.isOk) {
+          saveBtn.textContent = '✅ Tersimpan!';
+          saveBtn.classList.remove('from-amber-600', 'to-amber-500', 'hover:from-amber-500', 'hover:to-amber-400');
+          saveBtn.classList.add('from-emerald-600', 'to-emerald-500', 'hover:from-emerald-500', 'hover:to-emerald-400');
+          document.getElementById('save-status').classList.remove('hidden');
+          showToast('✅ Prompt berhasil disimpan ke Riwayat!');
+          setTimeout(() => {
+            saveBtn.disabled = false;
+            saveBtn.textContent = originalText;
+            saveBtn.classList.remove('from-emerald-600', 'to-emerald-500', 'hover:from-emerald-500', 'hover:to-emerald-400');
+            saveBtn.classList.add('from-amber-600', 'to-amber-500', 'hover:from-amber-500', 'hover:to-amber-400');
+          }, 2000);
+        } else {
+          saveBtn.disabled = false;
+          saveBtn.textContent = originalText;
+          const errorMsg = result.error ? result.error.message : 'Kesalahan tidak diketahui';
+          showToast('❌ Gagal menyimpan: ' + errorMsg, true);
+        }
+      } catch (error) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+        showToast('❌ Error: ' + error.message, true);
+      }
+    });
+
+    document.getElementById('copy-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const prompt = document.getElementById('generated-prompt').textContent;
+      
+      if (!prompt) {
+        showToast('Tidak ada prompt untuk disalin', true);
+        return;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(prompt).then(() => {
+          showToast('✅ Prompt berhasil disalin!');
+        }).catch(() => {
+          fallbackCopy(prompt);
+        });
+      } else {
+        fallbackCopy(prompt);
+      }
+    });
+
+    document.getElementById('clear-history-btn').addEventListener('click', async function(e) {
+      e.preventDefault();
+      if (historyData.length === 0) return;
+      
+      const confirmDelete = confirm('Hapus semua riwayat? Tindakan ini tidak dapat dibatalkan.');
+      if (!confirmDelete) return;
+
+      for (const item of historyData) {
+        await window.dataSdk.delete(item);
+      }
+
+      showToast('✅ Semua riwayat dihapus!');
+    });
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '0';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      
+      try {
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        showToast('✅ Prompt berhasil disalin!');
+      } catch (err) {
+        showToast('❌ Gagal menyalin prompt', true);
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    function showToast(message, isError = false) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      
+      toast.className = `fixed bottom-6 right-6 px-5 py-3 font-medium rounded-xl shadow-lg transform transition-all ${isError ? 'bg-red-600' : 'bg-emerald-600'} text-white z-50`;
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
+      
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    applyConfig();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cc3ba743497ea81',t:'MTc3MDgxMTY3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
